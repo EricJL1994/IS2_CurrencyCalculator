@@ -3,6 +3,8 @@ package ui;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import model.Currency;
 import model.CurrencyMap;
 import model.Exchange;
@@ -13,12 +15,16 @@ public class ExchangeDialog {
     public Exchange execute(CurrencyMap currencyMap) throws IOException {
         System.out.println("Seleccione una divisa de la lista");
         System.out.println(currencyMap.toString());
+        
         System.out.println("Introduce el código de la divisa origen");
         Currency moneyCurrency = readCurrency(currencyMap);
+        
         System.out.println("Introduce el código de la divisa destino");
         Currency currency = readCurrency(currencyMap);
         
-        return new Exchange(new Money(moneyCurrency, 200), currency);
+        System.out.println("Introduce la cantidad");
+        double amount = readAmount();
+        return new Exchange(new Money(moneyCurrency, amount), currency);
     }
     
     private Currency readCurrency(CurrencyMap currencyMap) throws IOException{
@@ -36,6 +42,14 @@ public class ExchangeDialog {
     }
     
     private double readAmount(){
-        return Double.NaN;
+        double amount;
+        System.out.print("Cantidad: ");
+        try {
+            String buffer = new BufferedReader(new InputStreamReader(System.in)).readLine();
+            amount = Double.parseDouble(buffer);
+        } catch (IOException ex) {
+            amount = 0;
+        }
+        return amount;
     }
 }

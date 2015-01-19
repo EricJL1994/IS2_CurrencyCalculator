@@ -18,10 +18,10 @@ public class ExchangeRateLoader {
         BufferedReader in = new BufferedReader(new InputStreamReader(url.openStream()));
         String line;
         String rate = "";
-        while ((line = in.readLine()) != null) {
-            rate = line.substring(line.indexOf(">") + 1);
+        while((line = in.readLine()) != null){
+            rate = line;
         }
-        rate = rate.substring(0, rate.indexOf("<"));
+        rate = rate.replaceAll(".*>(.*)<.*", "$1");
         double doble = Double.parseDouble(rate);
         return new ExchangeRate(from, to, doble);
     }
